@@ -33,7 +33,8 @@ This project has been forked from: https://github.com/devias-io/material-kit-rea
 ---
 
 ## Homepage
-![Overview_Page](https://github.com/user-attachments/assets/aa4a4c89-212d-41fe-81c0-ca6824f2cd5f)
+![image](https://github.com/user-attachments/assets/b46fb1f3-8876-48d7-a0c5-3a0e840aa603)
+
 
 ---
 
