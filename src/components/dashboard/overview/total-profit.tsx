@@ -5,26 +5,26 @@ import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import type { SxProps } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { Receipt as ReceiptIcon } from '@phosphor-icons/react/dist/ssr/Receipt';
+import { Sun as SunIcon } from '@phosphor-icons/react/dist/ssr/Sun';
 
-export interface TotalProfitProps {
+export interface UltravioletProps {
   sx?: SxProps;
   value: string;
 }
 
-export function TotalProfit({ value, sx }: TotalProfitProps): React.JSX.Element {
+export function Ultraviolet({ value, sx }: UltravioletProps): React.JSX.Element {
   return (
     <Card sx={sx}>
       <CardContent>
         <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-              Total Profit
+              UV Level
             </Typography>
             <Typography variant="h4">{value}</Typography>
           </Stack>
           <Avatar sx={{ backgroundColor: 'var(--mui-palette-primary-main)', height: '56px', width: '56px' }}>
-            <ReceiptIcon fontSize="var(--icon-fontSize-lg)" />
+            <SunIcon fontSize="var(--icon-fontSize-lg)" />
           </Avatar>
         </Stack>
       </CardContent>
