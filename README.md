@@ -1,92 +1,40 @@
-## [Devias Kit - React](https://material-kit-react.devias.io/)
+# Elderly Health Monitoring Smartwatch Web Dashboard
 
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+## Project Introduction
+The Wearable Health Monitoring System is designed to provide a user-friendly interface for monitoring and managing health data collected from wearable devices. This Web UI is developed to visualize real-time health metrics, such as heart rate, body temperature, and blood pressure, and to enable users and caregivers to track historical data, set alerts, and receive health-related suggestions. The project focuses on providing an intuitive experience for elderly users while ensuring data security and ease of use.
 
-[![Devias Kit - React](https://github.com/devias-io/material-kit-react/blob/main/public/assets/thumbnail.png)](https://material-kit-react.devias.io/)
+## Overview
 
-> Free React Admin Dashboard made with [MUI's](https://mui.com) components, [React](https://reactjs.org) and of course [Next.js](https://github.com/vercel/next.js) to boost your app development process!
+This is the web dashboard for the **Elderly Health Monitoring Smartwatch**, designed to provide users and caregivers with easy access to health data collected from the smartwatch. The dashboard displays real-time health metrics such as heart rate, body temperature, step count, and UV radiation levels, as well as historical data for tracking long-term trends.
 
-## Pages 
+This project has been forked from: https://github.com/devias-io/material-kit-react
 
-- [Dashboard](https://material-kit-react.devias.io)
-- [Customers](https://material-kit-react.devias.io/dashboard/customers)
-- [Integrations](https://material-kit-react.devias.io/dashboard/integrations)
-- [Settings](https://material-kit-react.devias.io/dashboard/settings)
-- [Account](https://material-kit-react.devias.io/dashboard/account)
-- [Sign In](https://material-kit-react.devias.io/auth/sign-in)
-- [Sign Up](https://material-kit-react.devias.io/auth/sign-up)
-- [Reset Password](https://material-kit-react.devias.io/auth/reset-password)
+---
 
-## Free Figma Community File
+## Features
 
-- [Duplicate File](https://www.figma.com/file/b3L1Np4RYiicZAOMopHNkm/Devias-Dashboard-Design-Library-Kit)
+- **Real-Time Health Data**: View real-time heart rate, body temperature, step count, and UV levels.
+- **Historical Data Visualization**: Interactive charts to review health trends over time.
+- **Alerts & Notifications**: Receive alerts for irregular health readings and reminders for medication, hydration, etc.
+- **User Management**: Secure login for users and caregivers to manage profiles and access data.
+- **Responsive Design**: Optimized for desktop and mobile viewing.
 
-## Upgrade to PRO Version
 
-We also have a pro version of this product which bundles even more pages and components if you want
-to save more time and design efforts :)
+---
+## Sign In Page
+![Sign In Page](https://github.com/user-attachments/assets/1febe6c5-fabc-446b-9c3f-edd7d5fd39e3)
 
-| Free Version (this one)  | [Devias Kit Pro](https://mui.com/store/items/devias-kit-pro/)                |
-| ------------------------ | :--------------------------------------------------------------------------- |
-| **8** Pages              | **80+** Pages                                                                |
-| ✔ Custom Authentication  | ✔ Authentication with **Amplify**, **Auth0**, **Firebase** and **Supabase**  |
-| -                        | ✔ Vite Version                                                               |
-| -                        | ✔ Dark Mode Support                                                          |
-| -                        | ✔ Complete Users Flows                                                       |
-| -                        | ✔ Premium Technical Support                                                  |
+---
 
-## Quick start
+## Sign Up Page
+![Sign Up Page](https://github.com/user-attachments/assets/26fa3b98-56da-4f93-8a3f-33bb8c0644a0)
 
-- Clone the repo: `git clone https://github.com/devias-io/material-kit-react.git`
-- Make sure your Node.js and npm versions are up to date
-- Install dependencies: `npm install` or `yarn`
-- Start the server: `npm run dev` or `yarn dev`
-- Open browser: `http://localhost:3000`
+---
 
-## File Structure
+## Homepage
+![Overview_Page](https://github.com/user-attachments/assets/aa4a4c89-212d-41fe-81c0-ca6824f2cd5f)
 
-Within the download you'll find the following directories and files:
+---
 
-```
-┌── .editorconfig
-├── .eslintrc.js
-├── .gitignore
-├── CHANGELOG.md
-├── LICENSE.md
-├── next-env.d.ts
-├── next.config.js
-├── package.json
-├── README.md
-├── tsconfig.json
-├── public
-└── src
-	├── components
-	├── contexts
-	├── hooks
-	├── lib
-	├── styles
-	├── types
-	└── app
-		├── layout.tsx
-		├── page.tsx
-		├── auth
-		└── dashboard
-```
 
-## Resources
 
-- More freebies like this one: https://devias.io
-
-## Reporting Issues:
-
-- [Github Issues Page](https://github.com/devias-io/material-kit-react/issues)
-
-## License
-
-- Licensed under [MIT](https://github.com/devias-io/material-kit-react/blob/main/LICENSE.md)
-
-## Contact Us
-
-- Email Us: support@deviasio.zendesk.com
-
-- 

@@ -14,12 +14,19 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 import Grid from '@mui/material/Unstable_Grid2';
 
-const states = [
-  { value: 'alabama', label: 'Alabama' },
-  { value: 'new-york', label: 'New York' },
-  { value: 'san-francisco', label: 'San Francisco' },
-  { value: 'los-angeles', label: 'Los Angeles' },
+const provinces = [
+  { value: 'alberta', label: 'Alberta' },
+  { value: 'british-columbia', label: 'British Columbia' },
+  { value: 'manitoba', label: 'Manitoba' },
+  { value: 'new-brunswick', label: 'New Brunswick' },
+  { value: 'newfoundland-and-labrador', label: 'Newfoundland and Labrador' },
+  { value: 'nova-scotia', label: 'Nova Scotia' },
+  { value: 'ontario', label: 'Ontario' },
+  { value: 'prince-edward-island', label: 'Prince Edward Island' },
+  { value: 'quebec', label: 'Quebec' },
+  { value: 'saskatchewan', label: 'Saskatchewan' }
 ] as const;
+
 
 export function AccountDetailsForm(): React.JSX.Element {
   return (
@@ -58,10 +65,28 @@ export function AccountDetailsForm(): React.JSX.Element {
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Emergency Contact Name</InputLabel>
+                <OutlinedInput /*defaultValue="Maria"*/ label="Emergency Contact Name" name="emergencyContact" />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Emergency Contact Number</InputLabel>
+                <OutlinedInput label="Emergency Contact Number" name="emergencyPhone" type="tel" />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Age</InputLabel>
+                <OutlinedInput label="Age" name="age" />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
               <FormControl fullWidth>
-                <InputLabel>State</InputLabel>
-                <Select defaultValue="New York" label="State" name="state" variant="outlined">
-                  {states.map((option) => (
+                <InputLabel>Province</InputLabel>
+                <Select defaultValue="Ontario" label="Province" name="province" variant="outlined">
+                  {provinces.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
