@@ -5,6 +5,7 @@
 This is the web dashboard for the **Elderly Health Monitoring Smartwatch**, designed to provide users and caregivers with easy access to health data collected from the smartwatch. The dashboard displays real-time health metrics such as heart rate, body temperature, step count, and UV radiation levels, as well as historical data for tracking long-term trends.
 
 This project has been forked from: https://github.com/devias-io/material-kit-react
+
 ---
 
 ## Features
