@@ -34,7 +34,7 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
       <Box
         sx={{
           alignItems: 'center',
-          background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)',
+          background: 'linear-gradient(to bottom, #d4e9fc, #ffffff)', // 蓝白渐变色
           color: 'var(--mui-palette-common-white)',
           display: { xs: 'none', lg: 'flex' },
           justifyContent: 'center',
@@ -43,21 +43,21 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
       >
         <Stack spacing={3}>
           <Stack spacing={1}>
-            <Typography color="inherit" sx={{ fontSize: '24px', lineHeight: '32px', textAlign: 'center' }} variant="h1">
+            <Typography color="#1A237E" sx={{ fontSize: '24px', lineHeight: '32px', textAlign: 'center' }} variant="h1">
               Welcome to{' '}
-              <Box component="span" sx={{ color: '#15b79e' }}>
-                Devias Kit
+              <Box component="span" sx={{ color: '#004D40' }}>
+                Elder Guardian
               </Box>
             </Typography>
-            <Typography align="center" variant="subtitle1">
-              A professional template that comes with ready-to-use MUI components.
+            <Typography color="#1A237E" align="center" variant="subtitle1">
+              A powerful watch that cares about the health of the elderly.
             </Typography>
           </Stack>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Box
               component="img"
-              alt="Widgets"
-              src="/assets/auth-widgets.png"
+              alt="New Widgets Image"
+              src="/assets/login1.png" // 新的图片路径，请替换成实际路径
               sx={{ height: 'auto', width: '100%', maxWidth: '600px' }}
             />
           </Box>
