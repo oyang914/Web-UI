@@ -12,9 +12,12 @@ const user = {
   name: 'Sofia Rivers',
   avatar: '/assets/avatar.png',
   jobTitle: 'Senior Developer',
-  country: 'USA',
-  city: 'Los Angeles',
-  timezone: 'GTM-7',
+  country: 'Canada',
+  city: 'Ottawa',
+  timezone: 'GTM-4',
+  age:'60',
+  emergencyContact: 'Maria Rivers',
+  emergencyContactPhone: '613-555-5555',
 } as const;
 
 export function AccountInfo(): React.JSX.Element {
@@ -31,8 +34,15 @@ export function AccountInfo(): React.JSX.Element {
               {user.city} {user.country}
             </Typography>
             <Typography color="text.secondary" variant="body2">
+              {user.age} years old
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Emergency Conact: {user.emergencyContact} {user.emergencyContactPhone}
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
               {user.timezone}
             </Typography>
+            
           </Stack>
         </Stack>
       </CardContent>

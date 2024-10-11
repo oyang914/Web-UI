@@ -58,9 +58,27 @@ export function AccountDetailsForm(): React.JSX.Element {
               </FormControl>
             </Grid>
             <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Emergency Contact Name</InputLabel>
+                <OutlinedInput /*defaultValue="Maria"*/ label="Emergency Contact Name" name="emergencyContact" />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Emergency Contact Number</InputLabel>
+                <OutlinedInput label="Emergency Contact Number" name="emergencyPhone" type="tel" />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
+              <FormControl fullWidth required>
+                <InputLabel>Age</InputLabel>
+                <OutlinedInput label="Age" name="age" />
+              </FormControl>
+            </Grid>
+            <Grid md={6} xs={12}>
               <FormControl fullWidth>
                 <InputLabel>State</InputLabel>
-                <Select defaultValue="New York" label="State" name="state" variant="outlined">
+                <Select defaultValue="Ontario" label="State" name="state" variant="outlined">
                   {states.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
