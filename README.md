@@ -1,4 +1,4 @@
-**# Elderly Health Monitoring Smartwatch Web Dashboard
+# Elderly Health Monitoring Smartwatch Web Dashboard
 
 ## Overview
 
