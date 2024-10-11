@@ -1,7 +1,7 @@
+# Elderly Health Monitoring Smartwatch Web Dashboard
+
 ## Project Introduction
 The Wearable Health Monitoring System is designed to provide a user-friendly interface for monitoring and managing health data collected from wearable devices. This Web UI is developed to visualize real-time health metrics, such as heart rate, body temperature, and blood pressure, and to enable users and caregivers to track historical data, set alerts, and receive health-related suggestions. The project focuses on providing an intuitive experience for elderly users while ensuring data security and ease of use.
-
-# Elderly Health Monitoring Smartwatch Web Dashboard
 
 ## Overview
 
