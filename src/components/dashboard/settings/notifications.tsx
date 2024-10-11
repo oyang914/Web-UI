@@ -44,6 +44,27 @@ export function Notifications(): React.JSX.Element {
                 </FormGroup>
               </Stack>
             </Grid>
+            <Grid md={4} sm={6} xs={12}>
+              <Stack spacing={1}>
+                <Typography variant="h6">Emergency</Typography>
+                <FormGroup>
+                  <FormControlLabel control={<Checkbox defaultChecked />} label="Emergency Contact" />
+                  <FormControlLabel control={<Checkbox />} label="WI-FI Disconnection " />
+                  <FormControlLabel control={<Checkbox />} label="GPS Out of Range" />
+                </FormGroup>
+              </Stack>
+            </Grid>
+            <Grid md={4} sm={6} xs={12}>
+              <Stack spacing={1}>
+                <Typography variant="h6">User Data</Typography>
+                <FormGroup>
+                  <FormControlLabel control={<Checkbox defaultChecked />} label="Heart Rate" />
+                  <FormControlLabel control={<Checkbox />} label="UV Rate" />
+                  <FormControlLabel control={<Checkbox />} label="Temperature" />
+                  <FormControlLabel control={<Checkbox />} label="Blood Oxygen" />
+                </FormGroup>
+              </Stack>
+            </Grid>
           </Grid>
         </CardContent>
         <Divider />
