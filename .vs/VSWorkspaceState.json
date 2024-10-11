@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
-    "\\public\\assets",
     "\\src",
+    "\\src\\app",
+    "\\src\\app\\dashboard",
     "\\src\\components",
-    "\\src\\components\\auth",
     "\\src\\components\\core",
     "\\src\\components\\dashboard",
     "\\src\\components\\dashboard\\integrations",
-    "\\src\\components\\dashboard\\layout"
+    "\\src\\components\\dashboard\\layout",
+    "\\src\\components\\dashboard\\overview"
   ],
-  "SelectedNode": "\\src\\components\\dashboard\\overview\\total-profit.tsx",
+  "SelectedNode": "\\src\\app\\dashboard\\page.tsx",
   "PreviewInSolutionExplorer": false
 }

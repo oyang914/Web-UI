@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\dashboard\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\dashboard\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\sales.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\dashboard\\overview\\sales.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\total-profit.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\dashboard\\overview\\total-profit.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\dashboard\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\app\\dashboard\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\tasks-progress.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
@@ -110,24 +106,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "sales.tsx",
-              "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\sales.tsx",
-              "RelativeDocumentMoniker": "src\\components\\dashboard\\overview\\sales.tsx",
-              "ToolTip": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\sales.tsx",
-              "RelativeToolTip": "src\\components\\dashboard\\overview\\sales.tsx",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T04:40:08.839Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "tasks-progress.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\tasks-progress.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\overview\\tasks-progress.tsx",
@@ -135,11 +118,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\overview\\tasks-progress.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T03:24:45.708Z"
+              "WhenOpened": "2024-10-11T03:24:45.708Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "total-profit.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\total-profit.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\overview\\total-profit.tsx",
@@ -152,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "latest-orders.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\latest-orders.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\overview\\latest-orders.tsx",
@@ -160,11 +144,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\overview\\latest-orders.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T03:05:17.534Z"
+              "WhenOpened": "2024-10-11T03:05:17.534Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\page.tsx",
               "RelativeDocumentMoniker": "src\\app\\page.tsx",
@@ -172,24 +157,25 @@
               "RelativeToolTip": "src\\app\\page.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:55:11.876Z"
+              "WhenOpened": "2024-10-11T02:55:11.876Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\dashboard\\page.tsx",
               "RelativeDocumentMoniker": "src\\app\\dashboard\\page.tsx",
               "ToolTip": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\dashboard\\page.tsx",
               "RelativeToolTip": "src\\app\\dashboard\\page.tsx",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAABYAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
               "WhenOpened": "2024-10-11T02:53:39.746Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "config.ts",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\layout\\config.ts",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\layout\\config.ts",
@@ -197,11 +183,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\layout\\config.ts",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:51:25.412Z"
+              "WhenOpened": "2024-10-11T02:51:25.412Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "total-customers.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\total-customers.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\overview\\total-customers.tsx",
@@ -209,11 +196,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\overview\\total-customers.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADQAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:33:20.753Z"
+              "WhenOpened": "2024-10-11T02:33:20.753Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "logo.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\core\\logo.tsx",
               "RelativeDocumentMoniker": "src\\components\\core\\logo.tsx",
@@ -221,11 +209,12 @@
               "RelativeToolTip": "src\\components\\core\\logo.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:28:49.068Z"
+              "WhenOpened": "2024-10-11T02:28:49.068Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "localization-provider.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\core\\localization-provider.tsx",
               "RelativeDocumentMoniker": "src\\components\\core\\localization-provider.tsx",
@@ -233,11 +222,12 @@
               "RelativeToolTip": "src\\components\\core\\localization-provider.tsx",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:28:06.242Z"
+              "WhenOpened": "2024-10-11T02:28:06.242Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "chart.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\core\\chart.tsx",
               "RelativeDocumentMoniker": "src\\components\\core\\chart.tsx",
@@ -245,11 +235,12 @@
               "RelativeToolTip": "src\\components\\core\\chart.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:27:50.781Z"
+              "WhenOpened": "2024-10-11T02:27:50.781Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\auth\\reset-password\\page.tsx",
               "RelativeDocumentMoniker": "src\\app\\auth\\reset-password\\page.tsx",
@@ -257,11 +248,12 @@
               "RelativeToolTip": "src\\app\\auth\\reset-password\\page.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:27:05.8Z"
+              "WhenOpened": "2024-10-11T02:27:05.8Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "layout.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\auth\\layout.tsx",
               "RelativeDocumentMoniker": "src\\components\\auth\\layout.tsx",
@@ -269,11 +261,12 @@
               "RelativeToolTip": "src\\components\\auth\\layout.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:23:40.549Z"
+              "WhenOpened": "2024-10-11T02:23:40.549Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 14,
               "Title": "auth-guard.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\auth\\auth-guard.tsx",
               "RelativeDocumentMoniker": "src\\components\\auth\\auth-guard.tsx",
@@ -281,11 +274,12 @@
               "RelativeToolTip": "src\\components\\auth\\auth-guard.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:23:37.06Z"
+              "WhenOpened": "2024-10-11T02:23:37.06Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 15,
               "Title": "sign-in-form.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\auth\\sign-in-form.tsx",
               "RelativeDocumentMoniker": "src\\components\\auth\\sign-in-form.tsx",
@@ -293,11 +287,12 @@
               "RelativeToolTip": "src\\components\\auth\\sign-in-form.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:22:22.495Z"
+              "WhenOpened": "2024-10-11T02:22:22.495Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 16,
               "Title": "notifications.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\settings\\notifications.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\settings\\notifications.tsx",
@@ -305,11 +300,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\settings\\notifications.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:21:40.555Z"
+              "WhenOpened": "2024-10-11T02:21:40.555Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "budget.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\overview\\budget.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\overview\\budget.tsx",
@@ -317,11 +313,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\overview\\budget.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:17:52.393Z"
+              "WhenOpened": "2024-10-11T02:17:52.393Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "account-details-form.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\components\\dashboard\\account\\account-details-form.tsx",
               "RelativeDocumentMoniker": "src\\components\\dashboard\\account\\account-details-form.tsx",
@@ -329,11 +326,12 @@
               "RelativeToolTip": "src\\components\\dashboard\\account\\account-details-form.tsx",
               "ViewState": "AgIAAB0AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:16:19.271Z"
+              "WhenOpened": "2024-10-11T02:16:19.271Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 17,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\auth\\sign-in\\page.tsx",
               "RelativeDocumentMoniker": "src\\app\\auth\\sign-in\\page.tsx",
@@ -341,11 +339,12 @@
               "RelativeToolTip": "src\\app\\auth\\sign-in\\page.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:15:52.168Z"
+              "WhenOpened": "2024-10-11T02:15:52.168Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 20,
               "Title": "page.tsx",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\src\\app\\dashboard\\account\\page.tsx",
               "RelativeDocumentMoniker": "src\\app\\dashboard\\account\\page.tsx",
@@ -353,11 +352,12 @@
               "RelativeToolTip": "src\\app\\dashboard\\account\\page.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2024-10-11T02:14:02.326Z"
+              "WhenOpened": "2024-10-11T02:14:02.326Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 19,
               "Title": "tsconfig.json",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\tsconfig.json",
               "RelativeDocumentMoniker": "tsconfig.json",
@@ -365,11 +365,12 @@
               "RelativeToolTip": "tsconfig.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-11T02:13:34.071Z"
+              "WhenOpened": "2024-10-11T02:13:34.071Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 18,
               "Title": "package.json",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\package.json",
               "RelativeDocumentMoniker": "package.json",
@@ -377,11 +378,12 @@
               "RelativeToolTip": "package.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-11T02:13:28.945Z"
+              "WhenOpened": "2024-10-11T02:13:28.945Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 21,
               "Title": "CHANGELOG.md",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\CHANGELOG.md",
               "RelativeDocumentMoniker": "CHANGELOG.md",
@@ -389,11 +391,12 @@
               "RelativeToolTip": "CHANGELOG.md",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2024-10-11T02:13:18.746Z"
+              "WhenOpened": "2024-10-11T02:13:18.746Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 22,
               "Title": ".gitattributes",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\.gitattributes",
               "RelativeDocumentMoniker": ".gitattributes",
@@ -401,11 +404,12 @@
               "RelativeToolTip": ".gitattributes",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF8SURBVDhPjVNLTgJBEG1lwpoFB3GNK9fieA48hD8iwT/ihwgSDAIHgAGXXsEV18CNzL/LquqZdsYM6kteXqcy3fWqpmpNRBgOhyABBEgpAFVKPIMUcYzUyOU\u002BXM/b2qtU3vkSfRjjZTCAMAw1A2LwzdFoBPP5HNqdzuL27n4juibWI\u002BUshBA1DIkhEx9iEorFotgslQqGYbxxAGFEqt1MxmPWJLbLZdZ\u002Bv89q5PMFPiTR6z2zdaxR0fXA0XTBcVywkb4fwHXjRteecIDNQ7UmExVYAdPcxYaqclN46na5WenMKjtlVnTYwcXlVYaDqImW9beD5N/TeGy32QHXm6hZ03ZgiSQHp2fnWQ4oBmJqWSqwAqZpZjt4aLXAD4J0VqyZsmoubfB8H2r1eoaD6NXZ9HcHO\u002BSA3f4AjifXl8rItOETM8ckB9WTWpYD9RdeZ1PWVWAHWXPQaDb59f/w8LiqHeh1pvGkCaP6qB8yXusoxmuNZ7XmII4O9vGuEF86osuDYRkpYQAAAABJRU5ErkJggg==",
-              "WhenOpened": "2024-10-11T02:13:13.945Z"
+              "WhenOpened": "2024-10-11T02:13:13.945Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 23,
               "Title": ".eslintrc.js",
               "DocumentMoniker": "C:\\Code\\CEG-Capstone\\WebUI\\Web-UI\\.eslintrc.js",
               "RelativeDocumentMoniker": ".eslintrc.js",
@@ -413,7 +417,8 @@
               "RelativeToolTip": ".eslintrc.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-10-11T02:13:04.946Z"
+              "WhenOpened": "2024-10-11T02:13:04.946Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
