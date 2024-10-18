@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { User } from '@/types/user';
@@ -35,15 +36,15 @@ export interface ResetPasswordParams {
 class AuthClient {
   // Sign up method (register a new user)
   async signUp(params: SignUpParams): Promise<{ error?: string }> {
-    const { email, password } = params;
+    const { firstName, lastName, email, password } = params;
 
     try {
-      const response = await fetch('http://localhost:3000/signup', {
+      const response = await fetch('http://localhost:3001/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
       const data = await response.json();
@@ -67,12 +68,12 @@ class AuthClient {
     const { email, password } = params;
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
