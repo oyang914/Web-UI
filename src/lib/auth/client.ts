@@ -23,10 +23,6 @@ export interface SignUpParams {
   password: string;
 }
 
-export interface SignInWithOAuthParams {
-  provider: 'google' | 'discord';
-}
-
 export interface SignInWithPasswordParams {
   email: string;
   password: string;
@@ -37,48 +33,67 @@ export interface ResetPasswordParams {
 }
 
 class AuthClient {
-  async signUp(_: SignUpParams): Promise<{ error?: string }> {
-    // Make API request
+  // Sign up method (register a new user)
+  async signUp(params: SignUpParams): Promise<{ error?: string }> {
+    const { email, password } = params;
 
-    // We do not handle the API, so we'll just generate a token and store it in localStorage.
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
+    try {
+      const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
 
-    return {};
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { error: data.message || 'Signup failed' };
+      }
+
+      const token = generateToken();
+      localStorage.setItem('custom-auth-token', token);
+
+      return {};
+    } catch (error) {
+      console.error('Signup error:', error);
+      return { error: 'Server error. Please try again.' };
+    }
   }
 
-  async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
-    return { error: 'Social authentication not implemented' };
-  }
-
+  // Login method with password
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { email, password } = params;
 
-    // Make API request
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
 
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'ceg4912@capstone.project' || password !== 'Secret1') {
-      return { error: 'Invalid credentials' };
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { error: data.message || 'Login failed' };
+      }
+
+      // Store JWT token from backend
+      localStorage.setItem('custom-auth-token', data.token);
+
+      return {};
+    } catch (error) {
+      console.error('Login error:', error);
+      return { error: 'Server error. Please try again.' };
     }
-
-    const token = generateToken();
-    localStorage.setItem('custom-auth-token', token);
-
-    return {};
-  }
-
-  async resetPassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Password reset not implemented' };
-  }
-
-  async updatePassword(_: ResetPasswordParams): Promise<{ error?: string }> {
-    return { error: 'Update reset not implemented' };
   }
 
   async getUser(): Promise<{ data?: User | null; error?: string }> {
     // Make API request
 
-    // We do not handle the API, so just check if we have a token in localStorage.
     const token = localStorage.getItem('custom-auth-token');
 
     if (!token) {
