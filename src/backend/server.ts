@@ -3,7 +3,6 @@ import cors from 'cors';
 import pkg from 'pg';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-import fetch from 'node-fetch';  // Make sure to import fetch for Node.js if needed
 
 dotenv.config();
 
@@ -106,7 +105,7 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
 
 // Chat API endpoint (connecting to Ollama server)
 app.post('/api', async (req: Request, res: Response): Promise<void> => {
-  const { prompt, model = 'llama3.2:latest', stream = false } = req.body;  // Ensure model and stream are accepted in the request body
+  const { prompt, model = 'llama3.2:latest' } = req.body;
 
   if (!prompt) {
     res.status(400).json({ message: 'Prompt is required' });
@@ -120,13 +119,47 @@ app.post('/api', async (req: Request, res: Response): Promise<void> => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model,    // Use the model field
-        prompt,   // User's prompt from the request
-        stream,   // Use the stream field (default to false)
+        model,
+        prompt,
+        stream: true, // Enable streaming from Ollama server
       }),
     });
-    const data = await response.json();
-    res.json(data);  // Send the Ollama server's response back to the client
+
+    // Set headers to enable streaming
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    if (response.body) {
+      // response.body is of type ReadableStream<Uint8Array>
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+
+      // Function to read and send data chunks
+      const readChunk = async () => {
+        let done = false;
+
+        while (!done) {
+          const { value, done: readerDone } = await reader.read();
+          if (readerDone) {
+            done = true;
+            break;
+          }
+          if (value) {
+            const chunk = decoder.decode(value);
+            res.write(chunk);
+          }
+        }
+        res.end();
+      };
+
+      readChunk().catch((err) => {
+        console.error('Error reading stream:', err);
+        res.end();
+      });
+    } else {
+      res.status(500).json({ message: 'No response body from Ollama server.' });
+    }
   } catch (error) {
     console.error('Error connecting to Ollama server:', error);
     res.status(500).json({ message: 'Error connecting to Ollama server.' });

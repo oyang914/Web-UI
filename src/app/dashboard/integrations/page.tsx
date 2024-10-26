@@ -18,26 +18,79 @@ export default function ConsultationsPage(): React.JSX.Element {
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
 
+    // Add the user's message to the chat history with an empty response
+    setChatHistory([...chatHistory, { user: userInput, response: '' }]);
+    const currentIndex = chatHistory.length;
+    setUserInput(''); // Clear the input field
+
     try {
-      // Send the message to the Ollama server at the generate endpoint
-      const response = await fetch('http://192.168.2.45:11434/api/generate', {
-        //这个IP如果不是在我服务器上部署这个网站的话，是需要改的，因为API在内网，未对外网开放
+      // Send the message to the backend server at the /api endpoint
+      const response = await fetch('http://localhost:3001/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'llama3.2',  // Specify the model
-          prompt: userInput,  // Send user input as the prompt
-          stream: false,      // Set stream to false as per the updated request
+          model: 'llama3.2',
+          prompt: userInput,
+          stream: true,
         }),
       });
 
-      const data = await response.json();
+      if (!response.ok || !response.body) {
+        console.error('Error sending message:', response.statusText);
+        return;
+      }
 
-      // Update the chat history with the new message and response
-      setChatHistory([...chatHistory, { user: userInput, response: data.response }]);
-      setUserInput('');  // Clear the input field
+      // Prepare to read the streamed response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+
+      let accumulatedResponse = '';
+      let buffer = '';
+
+      const readChunk = async () => {
+        let done = false;
+
+        while (!done) {
+          const { value, done: readerDone } = await reader.read();
+          if (readerDone) {
+            done = true;
+            break;
+          }
+          if (value) {
+            const chunk = decoder.decode(value);
+            buffer += chunk;
+
+            // Split buffer into lines (each line is a JSON object)
+            let lines = buffer.split('\n');
+            buffer = lines.pop(); // The last line may be incomplete
+
+            for (let line of lines) {
+              line = line.trim();
+              if (!line) continue;
+              try {
+                const data = JSON.parse(line);
+                if (data.response) {
+                  accumulatedResponse += data.response + ' ';
+                  // Update the chat history with the new data
+                  setChatHistory((prevChatHistory) => {
+                    const updatedChatHistory = [...prevChatHistory];
+                    updatedChatHistory[currentIndex].response = accumulatedResponse.trim();
+                    return updatedChatHistory;
+                  });
+                }
+              } catch (err) {
+                console.error('Error parsing JSON:', err);
+              }
+            }
+          }
+        }
+      };
+
+      readChunk().catch((err) => {
+        console.error('Error reading stream:', err);
+      });
     } catch (error) {
       console.error('Error sending message:', error);
     }
