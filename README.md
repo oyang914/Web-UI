@@ -38,5 +38,15 @@ This project has been forked from: https://github.com/devias-io/material-kit-rea
 
 ---
 
+## Current status
+
+What is done?
+
+- Signup 
+- Login
+- Change Password
+- AI Chat (Will not work if this is not deployed on the HomeLab Server, because the AI is not open to public)
+
+
 
 
