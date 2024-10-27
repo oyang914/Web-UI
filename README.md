@@ -44,8 +44,12 @@ What is done?
 
 - Signup 
 - Login
-- Change Password
-- AI Chat (Will not work if this is not deployed on the HomeLab Server, because the AI is not open to public)
+- AI Chat (Will not work if this is not deployed on the HomeLab Server, because the API is not open to public)
+
+What needs to be done right now?
+- Change Password (No longer working becasue the database structure changed)
+- Show Account details (using the new constructed user table from the database)
+- Including showing the popover (Top right name and email)
 
 
 

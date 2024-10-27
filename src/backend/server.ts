@@ -27,40 +27,56 @@ app.get('/', (req: Request, res: Response) => {
 
 // Endpoint for user registration (to hash and store password)
 app.post('/register', async (req: Request, res: Response): Promise<void> => {
-  const { email, firstName, lastName, password } = req.body;
-
-  // Log incoming data to ensure proper data is being received
-  console.log("Incoming registration data:", { email, firstName, lastName, password });
+  const { 
+    email, 
+    firstName, 
+    lastName, 
+    password, 
+    jobTitle = null, 
+    country = null, 
+    city = null, 
+    timezone = null, 
+    age = null, 
+    emergencyContact = null, 
+    emergencyContactPhone = null, 
+    avatarUrl = null 
+  } = req.body;
 
   if (!email || !firstName || !lastName || !password) {
-    res.status(400).json({ message: 'Email, first name, last name, and password are required' });
+    res.status(400).json({ message: 'Required fields are missing' });
     return;
   }
 
   try {
     // Check if user already exists
-    const userExists = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email]);
-
-    if (userExists.rows.length > 0) {
-      res.status(400).json({ message: 'User with this email already exists' });
+    const existingUser = await pool.query(
+      'SELECT id FROM users WHERE LOWER(email) = LOWER($1)', 
+      [email]
+    );
+    
+    if (existingUser.rows.length > 0) {
+      res.status(400).json({ message: 'User already exists' });
       return;
     }
 
-    // Hash the plain-text password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log("Hashed password:", hashedPassword);
-
-    // Insert the new user with the hashed password into the database
+    // Insert the user into the database
     await pool.query(
-      'INSERT INTO users (email, firstName, lastName, password, created_at) VALUES ($1, $2, $3, $4, NOW())',
-      [email, firstName, lastName, hashedPassword]
+      `INSERT INTO users (
+        email, "firstName", "lastName", password, created_at, "jobTitle", 
+        country, city, timezone, age, "emergencyContact", "emergencyContactPhone", avatar_url
+      ) VALUES ($1, $2, $3, $4, NOW(), $5, $6, $7, $8, $9, $10, $11, $12)`,
+      [
+        email, firstName, lastName, hashedPassword, jobTitle, 
+        country, city, timezone, age, emergencyContact, emergencyContactPhone, avatarUrl
+      ]
     );
 
     res.status(201).json({ message: 'User registered successfully' });
-  } catch (err) {
-    console.error('Error registering user:', err);
+  } catch (error) {
+    console.error('Error registering user:', error);
     res.status(500).json({ message: 'Server error during registration' });
   }
 });

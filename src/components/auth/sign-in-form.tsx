@@ -34,7 +34,7 @@ const defaultValues = { email: 'ceg4912@capstone.project', password: 'Secret1' }
 export function SignInForm(): React.JSX.Element {
   const router = useRouter();
 
-  const { checkSession } = useUser();
+  const { setUser, checkSession } = useUser(); // Destructure setUser from useUser
 
   const [showPassword, setShowPassword] = React.useState<boolean>();
 
@@ -47,27 +47,40 @@ export function SignInForm(): React.JSX.Element {
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
 
+  // Inside the onSubmit function of SignInForm
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
       setIsPending(true);
-
-      const { error } = await authClient.signInWithPassword(values);
-
-      if (error) {
-        setError('root', { type: 'server', message: error });
+  
+      try {
+        // Assuming this is the login function fetching the user data
+        const { user, error } = await authClient.signInWithPassword(values);
+  
+        console.log("Received user data from backend:", user); // Verify the user object structure here
+  
+        if (error) {
+          setError('root', { type: 'server', message: error });
+          setIsPending(false);
+          return;
+        }
+  
+        if (user) {
+          console.log("Setting user context with:", user);
+          setUser(user); // Make sure setUser is being called with the correct user object
+        }
+  
+        await checkSession?.();
+        router.refresh();
+      } catch (err) {
+        console.error("Login error:", err);
+      } finally {
         setIsPending(false);
-        return;
       }
-
-      // Refresh the auth state
-      await checkSession?.();
-
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      router.refresh();
     },
-    [checkSession, router, setError]
+    [checkSession, router, setError, setUser]
   );
+  
+
 
   return (
     <Stack spacing={4}>
@@ -141,7 +154,7 @@ export function SignInForm(): React.JSX.Element {
       <Alert color="warning">
         Use{' '}
         <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-        ceg4912@capstone.project
+          ceg4912@capstone.project
         </Typography>{' '}
         with password{' '}
         <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
