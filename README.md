@@ -51,6 +51,6 @@ What needs to be done right now?
 - Show Account details (using the new constructed user table from the database)
 - Including showing the popover (Top right name and email)
 
-
+Node.js v18.17.1.
 
 
