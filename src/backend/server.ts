@@ -25,6 +25,39 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Backend is running!');
 });
 
+// Reset password endpoint (to update the user's password in the database)
+app.post('/resetpassword', async (req: Request, res: Response): Promise<void> => {
+  const {password, email} = req.body;
+
+  if (confirmPassword != password) {
+    res.status(400).json({ message: 'Passwords are not the same' });
+    return;
+  }
+
+  try {
+    // Query the user by old password (case-insensitive)
+    const result = await pool.query('SELECT * FROM users WHERE userId
+
+    if (result.rows.length === 0) {
+      res.status(400).json({ message: 'User not found' });
+      return;
+    }
+
+    const user = result.rows[0];
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(confirmPassword, 10);
+
+    // Update the user's password in the database
+    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashedPassword, user.id]);
+
+    res.json({ message: 'Password reset successful' });
+  } catch (err) {
+    console.error('Error resetting password:', err);
+    res.status(500).json({ message: 'Server error during password reset' });
+  }
+});
+
 // Endpoint for user registration (to hash and store password)
 app.post('/register', async (req: Request, res: Response): Promise<void> => {
   const { 
