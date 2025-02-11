@@ -27,7 +27,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // Reset password endpoint (to update the user's password in the database)
 app.post('/resetpassword', async (req: Request, res: Response): Promise<void> => {
-  const {password, email} = req.body;
+  const {password, email, confirmPassword} = req.body;
 
   if (confirmPassword != password) {
     res.status(400).json({ message: 'Passwords are not the same' });
@@ -36,7 +36,7 @@ app.post('/resetpassword', async (req: Request, res: Response): Promise<void> =>
 
   try {
     // Query the user by old password (case-insensitive)
-    const result = await pool.query('SELECT * FROM users WHERE userId
+    const result = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email]);
 
     if (result.rows.length === 0) {
       res.status(400).json({ message: 'User not found' });
@@ -61,21 +61,15 @@ app.post('/resetpassword', async (req: Request, res: Response): Promise<void> =>
 // Endpoint for user registration (to hash and store password)
 app.post('/register', async (req: Request, res: Response): Promise<void> => {
   const { 
-    email, 
-    firstName, 
-    lastName, 
-    password, 
-    jobTitle = null, 
-    country = null, 
-    city = null, 
-    timezone = null, 
-    age = null, 
-    emergencyContact = null, 
-    emergencyContactPhone = null, 
-    avatarUrl = null 
+    username,
+    email,
+    password,
+    name,
+    emergency_contact_name,
+    emergency_contact_number,
   } = req.body;
 
-  if (!email || !firstName || !lastName || !password) {
+  if (!email || !emergency_contact_name || !name || !password || !emergency_contact_number || !username) {
     res.status(400).json({ message: 'Required fields are missing' });
     return;
   }
@@ -83,8 +77,8 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
     // Check if user already exists
     const existingUser = await pool.query(
-      'SELECT id FROM users WHERE LOWER(email) = LOWER($1)', 
-      [email]
+      'SELECT id FROM users WHERE email = $1 OR username = $2',
+      [email, username]
     );
     
     if (existingUser.rows.length > 0) {
@@ -96,15 +90,17 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert the user into the database
+    const insertQuery = `
+      INSERT INTO users (
+        username, email, hashedPassword, name, emergency_contact_name, emergency_contact_number, created_at
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, NOW())
+      RETURNING id, username, email, name, emergency_contact_name, emergency_contact_number, created_at
+    `;
+
     await pool.query(
-      `INSERT INTO users (
-        email, "firstName", "lastName", password, created_at, "jobTitle", 
-        country, city, timezone, age, "emergencyContact", "emergencyContactPhone", avatar_url
-      ) VALUES ($1, $2, $3, $4, NOW(), $5, $6, $7, $8, $9, $10, $11, $12)`,
-      [
-        email, firstName, lastName, hashedPassword, jobTitle, 
-        country, city, timezone, age, emergencyContact, emergencyContactPhone, avatarUrl
-      ]
+      insertQuery,
+      [username, email, hashedPassword, name, emergency_contact_name, emergency_contact_number]
     );
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -218,4 +214,46 @@ app.post('/api', async (req: Request, res: Response): Promise<void> => {
 // Start the backend server
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
+});
+
+// POST endpoint to receive sensor data from the ESP32 device
+app.post('/sensor-data', async (req: Request, res: Response): Promise<void> => {
+  // Extract expected fields from the request body
+  const { user_id, device_id, sensor_type, sensor_value, battery_rate } = req.body;
+
+  // Validate required fields (user_id, device_id, sensor_type, and sensor_value)
+  if (!user_id || !device_id || !sensor_type || sensor_value === undefined) {
+    res.status(400).json({ message: 'Missing required sensor data fields.' });
+    return;
+  }
+
+  try {
+    // Insert sensor data into the database.
+    // Note: The "recorded_at" column is automatically set to CURRENT_TIMESTAMP.
+    const queryText = `
+      INSERT INTO sensor_data (
+        user_id,
+        device_id,
+        sensor_type,
+        sensor_value,
+        battery_rate
+      )
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id, user_id, device_id, sensor_type, sensor_value, battery_rate, recorded_at
+    `;
+    const values = [user_id, device_id, sensor_type, sensor_value, battery_rate];
+    const result = await pool.query(queryText, values);
+
+    // Respond with the inserted sensor data
+    res.status(201).json({
+      message: 'Sensor data inserted successfully',
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    console.error('Error inserting sensor data:', error);
+    res.status(500).json({
+      message: 'Server error during sensor data insertion',
+      error: error.message,
+    });
+  }
 });
