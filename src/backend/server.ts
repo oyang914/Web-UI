@@ -131,7 +131,7 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
     const user = result.rows[0];
 
     // Compare the provided password with the hashed password stored in the database
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password_hash);
 
     if (!isPasswordCorrect) {
       res.status(400).json({ message: 'Invalid password' });
