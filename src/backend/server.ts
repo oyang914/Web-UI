@@ -92,7 +92,7 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
     // Insert the user into the database
     const insertQuery = `
       INSERT INTO users (
-        username, email, hashedPassword, name, emergency_contact_name, emergency_contact_number, created_at
+        username, email, password_hash, name, emergency_contact_name, emergency_contact_number, created_at
       )
       VALUES ($1, $2, $3, $4, $5, $6, NOW())
       RETURNING id, username, email, name, emergency_contact_name, emergency_contact_number, created_at
