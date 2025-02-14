@@ -13,6 +13,7 @@ import KeyboardIcon from "@mui/icons-material/Keyboard";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+
 const SYSTEM_PROMPT =
   "You are a professional health consultation assistant with knowledge of medicine and health management. Your task is to provide users with scientific, professional health advice based on their input, but do not provide medical diagnoses. Please answer users' questions clearly and professionally while maintaining a friendly and patient tone.";
 
@@ -81,12 +82,12 @@ export default function HealthConsultantChat(): React.JSX.Element {
   const handleSend = async (msg?: string) => {
     const text = msg || message;
     if (!text.trim()) return;
-
+  
     const userMessage = { text, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setMessage("");
     setLoading(true);
-
+  
     try {
       const response = await fetch("https://ollama.peakxel.net/api/generate", {
         method: "POST",
@@ -94,25 +95,114 @@ export default function HealthConsultantChat(): React.JSX.Element {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "llama3.2",
+          model: "deepseek-r1:8b",
           prompt: `${SYSTEM_PROMPT}\n\nUser query: ${text}`,
-          stream: false,
+          stream: true,
         }),
       });
-
-      const data = await response.json();
-      const assistantMessage = {
-        text: data.response || "Sorry, I am unable to answer that question.",
-        sender: "assistant",
+  
+      if (!response.body) {
+        throw new Error("No response body received.");
+      }
+  
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulatedText = "";
+      let buffer = "";
+      let insideThinkBlock = false;
+  
+      const thinkingFrames = ["Thinking.", "Thinking.", "Thinking..", "Thinking..", "Thinking...", "Thinking..."]; 
+      let thinkingIndex = 0;
+  
+      let interval: NodeJS.Timeout | null = setInterval(() => {
+        setMessages((prev) => {
+          const updatedMessages = [...prev];
+          const lastMessage = updatedMessages[updatedMessages.length - 1];
+  
+          if (lastMessage.sender === "assistant" && insideThinkBlock) {
+            lastMessage.text = thinkingFrames[thinkingIndex % thinkingFrames.length];
+          }
+  
+          thinkingIndex++;
+          return [...updatedMessages];
+        });
+      }, 500);
+  
+      setMessages((prev) => [...prev, { text: "Thinking...", sender: "assistant" }]);
+  
+      const readStream = async () => {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+  
+          buffer += decoder.decode(value, { stream: true });
+  
+          const parts = buffer.split("\n");
+          buffer = parts.pop() || "";
+  
+          for (const part of parts) {
+            try {
+              if (part.trim()) {
+                const jsonChunk = JSON.parse(part);
+                if (jsonChunk.response) {
+                  let newText = jsonChunk.response;
+  
+                  if (newText.includes("<think>")) {
+                    insideThinkBlock = true;
+                    setMessages((prev) => {
+                      const updatedMessages = [...prev];
+                      const lastMessage = updatedMessages[updatedMessages.length - 1];
+  
+                      if (lastMessage.sender === "assistant") {
+                        lastMessage.text = "Thinking...";
+                      }
+  
+                      return [...updatedMessages];
+                    });
+                  }
+                  if (newText.includes("</think>")) {
+                    insideThinkBlock = false;
+                    newText = newText.replace(/<\/?think>/g, "");
+                  }
+  
+                  if (!insideThinkBlock) {
+                    accumulatedText += newText;
+  
+                    if (interval) {
+                      clearInterval(interval);
+                      interval = null;
+                    }
+  
+                    setMessages((prev) => {
+                      const updatedMessages = [...prev];
+                      const lastMessage = updatedMessages[updatedMessages.length - 1];
+  
+                      if (lastMessage.sender === "assistant") {
+                        lastMessage.text = accumulatedText;
+                      } else {
+                        updatedMessages.push({ text: accumulatedText, sender: "assistant" });
+                      }
+  
+                      return [...updatedMessages];
+                    });
+                  }
+                }
+              }
+            } catch (error) {
+              console.warn("Error parsing JSON chunk:", error);
+            }
+          }
+        }
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+  
+      await readStream();
     } catch (error) {
       console.error("Error fetching response:", error);
     } finally {
       setLoading(false);
     }
   };
-
+  
   // 语音输入
   const handleVoiceRecordStart = () => {
     if (!recognitionRef.current) {

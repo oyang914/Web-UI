@@ -148,69 +148,6 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// Chat API endpoint (connecting to Ollama server)
-app.post('/api', async (req: Request, res: Response): Promise<void> => {
-  const { prompt, model = 'llama3.2:latest' } = req.body;
-
-  if (!prompt) {
-    res.status(400).json({ message: 'Prompt is required' });
-    return;
-  }
-
-  try {
-    const response = await fetch('http://192.168.2.45:11434/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model,
-        prompt,
-        stream: true, // Enable streaming from Ollama server
-      }),
-    });
-
-    // Set headers to enable streaming
-    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
-    if (response.body) {
-      // response.body is of type ReadableStream<Uint8Array>
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder('utf-8');
-
-      // Function to read and send data chunks
-      const readChunk = async () => {
-        let done = false;
-
-        while (!done) {
-          const { value, done: readerDone } = await reader.read();
-          if (readerDone) {
-            done = true;
-            break;
-          }
-          if (value) {
-            const chunk = decoder.decode(value);
-            res.write(chunk);
-          }
-        }
-        res.end();
-      };
-
-      readChunk().catch((err) => {
-        console.error('Error reading stream:', err);
-        res.end();
-      });
-    } else {
-      res.status(500).json({ message: 'No response body from Ollama server.' });
-    }
-  } catch (error) {
-    console.error('Error connecting to Ollama server:', error);
-    res.status(500).json({ message: 'Error connecting to Ollama server.' });
-  }
-});
-
 // Start the backend server
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
