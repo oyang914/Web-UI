@@ -70,7 +70,7 @@ export function SideNav(): React.JSX.Element {
               Device
             </Typography>
             <Typography color="inherit" variant="subtitle1">
-              SolaraX™ Pro
+              Elder guard
             </Typography>
           </Box>
           <CaretUpDownIcon />
