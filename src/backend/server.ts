@@ -217,7 +217,7 @@ app.listen(port, () => {
 });
 
 // POST endpoint to receive sensor data from the ESP32 device
-app.post('/sensor-data', async (req: Request, res: Response): Promise<void> => {
+/*app.post('/sensor-data', async (req: Request, res: Response): Promise<void> => {
   // Extract expected fields from the request body
   const { user_id, device_id, sensor_type, sensor_value, battery_rate } = req.body;
 
@@ -255,5 +255,54 @@ app.post('/sensor-data', async (req: Request, res: Response): Promise<void> => {
       message: 'Server error during sensor data insertion',
       error: error.message,
     });
+  }
+});*/
+
+// POST endpoint to receive sensor data from the ESP32 device
+app.post("/api/sensors", async (req: Request, res: Response): Promise<void> => {
+  try {
+      const { macAddress, uvData, bmp280Data, mpu6050Data, gy511Data, max3010Data } = req.body;
+
+      if (!macAddress) {
+          res.status(400).json({ error: "MAC address required" });
+      }
+
+      // Check if the MAC address exists in the devices table
+      let deviceQuery = await pool.query(
+          "SELECT device_id FROM devices WHERE mac_address = $1",
+          [macAddress]
+      );
+
+      let deviceId;
+      if (deviceQuery.rows.length === 0) {
+          // New device → register it
+          const newDevice = await pool.query(
+              "INSERT INTO devices (mac_address) VALUES ($1) RETURNING device_id",
+              [macAddress]
+          );
+          deviceId = newDevice.rows[0].device_id;
+      } else {
+          // Existing device
+          deviceId = deviceQuery.rows[0].device_id;
+      }
+
+      // Insert sensor data with the associated device_id
+      const insertQuery = `
+          INSERT INTO sensor_data (device_id, uv_data, bmp280_data, mpu6050_data, gy511_data, max3010_data)
+          VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+      `;
+      const result = await pool.query(insertQuery, [
+          deviceId,
+          JSON.stringify(uvData),
+          JSON.stringify(bmp280Data),
+          JSON.stringify(mpu6050Data),
+          gy511Data,
+          JSON.stringify(max3010Data)
+      ]);
+
+      res.status(201).json({ message: "Data inserted successfully", data: result.rows[0] });
+  } catch (error) {
+      console.error("Error inserting data:", error);
+      res.status(500).json({ error: "Server error" });
   }
 });
