@@ -87,7 +87,7 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const password_hash = await bcrypt.hash(password, 10);
 
     // Insert the user into the database
     const insertQuery = `
@@ -100,7 +100,7 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 
     await pool.query(
       insertQuery,
-      [username, email, hashedPassword, name, emergency_contact_name, emergency_contact_number]
+      [username, email, password_hash, name, emergency_contact_name, emergency_contact_number]
     );
 
     res.status(201).json({ message: 'User registered successfully' });
