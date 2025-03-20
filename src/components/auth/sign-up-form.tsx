@@ -16,43 +16,60 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Controller, useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
+import { z } from 'zod';
 
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { useUser } from '@/hooks/use-user';
 
-const schema = zod.object({
-  firstName: zod.string().min(1, { message: 'First name is required' }),
-  lastName: zod.string().min(1, { message: 'Last name is required' }),
-  email: zod.string().min(1, { message: 'Email is required' }).email(),
-  password: zod.string().min(6, { message: 'Password should be at least 6 characters' }),
-  terms: zod.boolean().refine((value) => value, 'You must accept the terms and conditions'),
+// Updated schema to match backend endpoint:
+const schema = z.object({
+  username: z.string().min(1, { message: 'Username is required' }),
+  name: z.string().min(1, { message: 'Full name is required' }),
+  email: z.string().min(1, { message: 'Email is required' }).email(),
+  password: z.string().min(6, { message: 'Password should be at least 6 characters' }),
+  emergency_contact_name: z.string().min(1, { message: 'Emergency contact name is required' }),
+  emergency_contact_number: z.string().min(1, { message: 'Emergency contact number is required' }),
+  terms: z.boolean().refine((value) => value, 'You must accept the terms and conditions'),
 });
 
-type Values = zod.infer<typeof schema>;
+type Values = z.infer<typeof schema>;
 
-const defaultValues = { firstName: '', lastName: '', email: '', password: '', terms: false } satisfies Values;
+const defaultValues: Values = {
+  username: '',
+  name: '',
+  email: '',
+  password: '',
+  emergency_contact_name: '',
+  emergency_contact_number: '',
+  terms: false,
+};
 
 export function SignUpForm(): React.JSX.Element {
   const router = useRouter();
-
   const { checkSession } = useUser();
-
   const [isPending, setIsPending] = React.useState<boolean>(false);
 
-  const {
-    control,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
+  const { control, handleSubmit, setError, formState: { errors } } = useForm<Values>({
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
       setIsPending(true);
 
-      const { error } = await authClient.signUp(values);
+      // Map form values to payload expected by the backend:
+      const payload = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        name: values.name,
+        emergency_contact_name: values.emergency_contact_name,
+        emergency_contact_number: values.emergency_contact_number,
+      };
+
+      const { error } = await authClient.signUp(payload);
 
       if (error) {
         setError('root', { type: 'server', message: error });
@@ -60,11 +77,10 @@ export function SignUpForm(): React.JSX.Element {
         return;
       }
 
-      // Refresh the auth state
+      // Refresh auth state
       await checkSession?.();
 
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
+      // Redirect or refresh after successful sign-up
       router.refresh();
     },
     [checkSession, router, setError]
@@ -85,23 +101,23 @@ export function SignUpForm(): React.JSX.Element {
         <Stack spacing={2}>
           <Controller
             control={control}
-            name="firstName"
+            name="username"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.firstName)}>
-                <InputLabel>First name</InputLabel>
-                <OutlinedInput {...field} label="First name" />
-                {errors.firstName ? <FormHelperText>{errors.firstName.message}</FormHelperText> : null}
+              <FormControl error={Boolean(errors.username)}>
+                <InputLabel>Username</InputLabel>
+                <OutlinedInput {...field} label="Username" />
+                {errors.username && <FormHelperText>{errors.username.message}</FormHelperText>}
               </FormControl>
             )}
           />
           <Controller
             control={control}
-            name="lastName"
+            name="name"
             render={({ field }) => (
-              <FormControl error={Boolean(errors.firstName)}>
-                <InputLabel>Last name</InputLabel>
-                <OutlinedInput {...field} label="Last name" />
-                {errors.firstName ? <FormHelperText>{errors.firstName.message}</FormHelperText> : null}
+              <FormControl error={Boolean(errors.name)}>
+                <InputLabel>Full Name</InputLabel>
+                <OutlinedInput {...field} label="Full Name" />
+                {errors.name && <FormHelperText>{errors.name.message}</FormHelperText>}
               </FormControl>
             )}
           />
@@ -112,7 +128,7 @@ export function SignUpForm(): React.JSX.Element {
               <FormControl error={Boolean(errors.email)}>
                 <InputLabel>Email address</InputLabel>
                 <OutlinedInput {...field} label="Email address" type="email" />
-                {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
+                {errors.email && <FormHelperText>{errors.email.message}</FormHelperText>}
               </FormControl>
             )}
           />
@@ -123,7 +139,29 @@ export function SignUpForm(): React.JSX.Element {
               <FormControl error={Boolean(errors.password)}>
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput {...field} label="Password" type="password" />
-                {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
+                {errors.password && <FormHelperText>{errors.password.message}</FormHelperText>}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="emergency_contact_name"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.emergency_contact_name)}>
+                <InputLabel>Emergency Contact Name</InputLabel>
+                <OutlinedInput {...field} label="Emergency Contact Name" />
+                {errors.emergency_contact_name && <FormHelperText>{errors.emergency_contact_name.message}</FormHelperText>}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="emergency_contact_number"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.emergency_contact_number)}>
+                <InputLabel>Emergency Contact Number</InputLabel>
+                <OutlinedInput {...field} label="Emergency Contact Number" />
+                {errors.emergency_contact_number && <FormHelperText>{errors.emergency_contact_number.message}</FormHelperText>}
               </FormControl>
             )}
           />
@@ -140,11 +178,11 @@ export function SignUpForm(): React.JSX.Element {
                     </React.Fragment>
                   }
                 />
-                {errors.terms ? <FormHelperText error>{errors.terms.message}</FormHelperText> : null}
+                {errors.terms && <FormHelperText error>{errors.terms.message}</FormHelperText>}
               </div>
             )}
           />
-          {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
+          {errors.root && <Alert color="error">{errors.root.message}</Alert>}
           <Button disabled={isPending} type="submit" variant="contained">
             Sign up
           </Button>
@@ -154,3 +192,4 @@ export function SignUpForm(): React.JSX.Element {
     </Stack>
   );
 }
+
