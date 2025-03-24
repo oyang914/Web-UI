@@ -47,6 +47,7 @@ What is done?
 - AI Chat with voice input
 - Data transmission from sensor to database
 - Sensor data displayed on front end
+  
 What needs to be done right now?
 - Change Password (No longer working becasue the database structure changed)
 - Show Account details (using the new constructed user table from the database)
