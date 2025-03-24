@@ -89,18 +89,46 @@ export default function HealthConsultantChat(): React.JSX.Element {
     setLoading(true);
   
     try {
-      const response = await fetch("https://ollama.peakxel.net/api/generate", {
+      // get latest sensor data
+      const sensorRes = await fetch("http://localhost:3001/api/latest-sensor");
+      const sensorData = await sensorRes.json();
+  
+      // integrate data to Prompt
+      const sensorPrompt = `
+  You are a professional health consultation assistant. Refer to the following sensor data:
+  
+  - UV index: ${sensorData.uv_data?.[0]}
+  - Temperature (°C): ${sensorData.bmp280_data?.[0]}
+  - Step count: ${sensorData.mpu6050_data?.[0]}
+  - Heart rate: ${sensorData.max3010_data?.[0]}
+  - Blood oxygen level (SpO2): ${sensorData.max3010_data?.[1]}
+  
+  Analyze the above data to give health advice. Consider:
+  - High UV -> remind to wear sunscreen or reduce outdoor activities
+  - Low step count -> encourage more walking
+  - High/low heart rate or SpO2 -> give potential reasons and suggestions
+  - Extreme temperature -> suggest precautions
+  
+  Example:
+  "If the UV index is high, recommend avoiding sun exposure. If steps are below 5000, recommend walking more."
+  
+  User's question: ${text}
+  
+  Think step by step. Then give professional and friendly advice.
+  `;
+  
+      // send to LLM
+      const response = await fetch("http://peakxel.tpddns.cn:11434/api/generate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "deepseek-r1:8b",
-          prompt: `${SYSTEM_PROMPT}\n\nUser query: ${text}`,
+          prompt: sensorPrompt,
           stream: true,
         }),
       });
   
+
       if (!response.body) {
         throw new Error("No response body received.");
       }
