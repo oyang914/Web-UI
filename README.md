@@ -18,7 +18,7 @@ This project has been forked from: https://github.com/devias-io/material-kit-rea
 - **Alerts & Notifications**: Receive alerts for irregular health readings and reminders for medication, hydration, etc.
 - **User Management**: Secure login for users and caregivers to manage profiles and access data.
 - **Responsive Design**: Optimized for desktop and mobile viewing.
-- **Health Consultation**: An AI chatbot based on ChatGPT4o answering your health-related questions.
+- **Health Consultation**: An AI chatbot based on DeepSeek r1 answering your health-related questions.
 
 
 ---
