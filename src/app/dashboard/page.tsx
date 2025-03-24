@@ -25,7 +25,7 @@ export default function Page(): React.JSX.Element {
         <Steps diff={16} trend="down" sx={{ height: '100%' }} value="20k" />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
-        <BloodOxygen sx={{ height: '100%' }} value={97.5} />
+        <BloodOxygen sx={{ height: '100%' }} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <Ultraviolet sx={{ height: '100%' }} value="6" />

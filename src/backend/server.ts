@@ -153,47 +153,6 @@ app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
 });
 
-// POST endpoint to receive sensor data from the ESP32 device
-/*app.post('/sensor-data', async (req: Request, res: Response): Promise<void> => {
-  // Extract expected fields from the request body
-  const { user_id, device_id, sensor_type, sensor_value, battery_rate } = req.body;
-
-  // Validate required fields (user_id, device_id, sensor_type, and sensor_value)
-  if (!user_id || !device_id || !sensor_type || sensor_value === undefined) {
-    res.status(400).json({ message: 'Missing required sensor data fields.' });
-    return;
-  }
-
-  try {
-    // Insert sensor data into the database.
-    // Note: The "recorded_at" column is automatically set to CURRENT_TIMESTAMP.
-    const queryText = `
-      INSERT INTO sensor_data (
-        user_id,
-        device_id,
-        sensor_type,
-        sensor_value,
-        battery_rate
-      )
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING id, user_id, device_id, sensor_type, sensor_value, battery_rate, recorded_at
-    `;
-    const values = [user_id, device_id, sensor_type, sensor_value, battery_rate];
-    const result = await pool.query(queryText, values);
-
-    // Respond with the inserted sensor data
-    res.status(201).json({
-      message: 'Sensor data inserted successfully',
-      data: result.rows[0],
-    });
-  } catch (error: any) {
-    console.error('Error inserting sensor data:', error);
-    res.status(500).json({
-      message: 'Server error during sensor data insertion',
-      error: error.message,
-    });
-  }
-});*/
 
 // POST endpoint to receive sensor data from the ESP32 device
 app.post("/api/sensors", async (req: Request, res: Response): Promise<void> => {
@@ -241,5 +200,190 @@ app.post("/api/sensors", async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
       console.error("Error inserting data:", error);
       res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/api/latest-max3010", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const result = await pool.query(`
+      SELECT max3010_data 
+      FROM sensor_data 
+      ORDER BY timestamp DESC 
+      LIMIT 1
+  ` );
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: "No data found" });
+      return;
+    }
+    res.json({ max3010_data: result.rows[0].max3010_data }); // return jsonb data
+  } catch (error) {
+    console.error("Error fetching max3010_data:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// GET endpoint to return the latest sensor data
+app.get('/api/latest-sensor', async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`
+      SELECT uv_data, bmp280_data, mpu6050_data, gy511_data, max3010_data, timestamp
+      FROM sensor_data
+      ORDER BY timestamp DESC
+      LIMIT 1
+    `);
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'No sensor data found' });
+      return;
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error fetching sensor data:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// uv_data get endpoint
+app.get("/api/latest-uv", async (req: Request, res: Response): Promise<void> => {
+  const result = await pool.query(`
+    SELECT uv_data 
+    FROM sensor_data 
+    ORDER BY timestamp DESC 
+    LIMIT 1
+  `);
+  if (result.rows.length === 0) {
+    res.status(404).json({ message: "No data found" });
+    return;
+  }
+  res.json({ uv_data: result.rows[0].uv_data });
+});
+
+// latest blood oxygen endpoint
+app.get('/api/latest-blood-oxygen', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const result = await pool.query(`
+      SELECT max3010_data
+      FROM sensor_data
+      ORDER BY timestamp DESC
+      LIMIT 1
+    `);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'No sensor data found' });
+    }
+
+    const max3010_data = result.rows[0].max3010_data;     const parsedData = typeof max3010_data === 'string' ? JSON.parse(max3010_data) : max3010_data;
+    const bloodOxygen = parsedData[1]; // 取 SpO2
+
+    res.json({ bloodOxygen });
+  } catch (error) {
+    console.error('Error fetching blood oxygen:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// 获取步数以及今日与昨日的对比差值
+/*app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    // 查询当天最新步数
+    const todayResult = await pool.query(`
+      SELECT mpu6050_data 
+      FROM sensor_data 
+      WHERE DATE(timestamp) = CURRENT_DATE
+      ORDER BY timestamp DESC 
+      LIMIT 1
+    `);
+
+    // 查询昨天最新步数
+    const yesterdayResult = await pool.query(`
+      SELECT mpu6050_data 
+      FROM sensor_data 
+      WHERE DATE(timestamp) = CURRENT_DATE - INTERVAL '1 day'
+      ORDER BY timestamp DESC 
+      LIMIT 1
+    `);
+
+    if (todayResult.rows.length === 0 || yesterdayResult.rows.length === 0) {
+      res.status(404).json({ message: 'No sufficient data' });
+      return;
+    }
+
+    const todaySteps = JSON.parse(todayResult.rows[0].mpu6050_data)[0];
+    const yesterdaySteps = JSON.parse(yesterdayResult.rows[0].mpu6050_data)[0];
+    const diff = ((todaySteps - yesterdaySteps) / yesterdaySteps) * 100;
+
+    res.json({ steps: todaySteps, diff: parseFloat(diff.toFixed(2)) });
+  } catch (error) {
+    console.error('Error fetching steps:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});*/
+
+app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Query today's latest steps
+    const todayResult = await pool.query(`
+      SELECT mpu6050_data 
+      FROM sensor_data
+      WHERE DATE(timestamp) = CURRENT_DATE
+      ORDER BY timestamp DESC 
+      LIMIT 1
+    `);
+
+    if (todayResult.rows.length === 0) {
+      // No data for today
+      res.status(404).json({ message: 'No data for today' });
+      return;
+    }
+
+    // Query yesterday's (or fallback) latest steps
+    // 1) Attempt yesterday
+    let yesterdayResult = await pool.query(`
+      SELECT mpu6050_data, timestamp
+      FROM sensor_data 
+      WHERE DATE(timestamp) = CURRENT_DATE - INTERVAL '1 day'
+      ORDER BY timestamp DESC
+      LIMIT 1
+    `);
+
+    if (yesterdayResult.rows.length === 0) {
+      // 2) Fallback: fetch the most recent day before today
+      yesterdayResult = await pool.query(`
+        SELECT mpu6050_data, timestamp
+        FROM sensor_data
+        WHERE DATE(timestamp) < CURRENT_DATE
+        ORDER BY timestamp DESC
+        LIMIT 1
+      `);
+
+      if (yesterdayResult.rows.length === 0) {
+        // No older data found at all
+        res.status(404).json({ message: 'No sufficient historical data' });
+        return;
+      }
+    }
+
+    // Now parse the data
+    const todaySteps = JSON.parse(todayResult.rows[0].mpu6050_data)[0];
+    const fallbackSteps = JSON.parse(yesterdayResult.rows[0].mpu6050_data)[0];
+
+    // Calculate percentage difference
+    //  (todaySteps - fallbackSteps) / fallbackSteps * 100
+    const diffRaw = fallbackSteps === 0
+      ? 100 // If fallbackSteps is 0, we can define behavior (100% or skip the division)
+      : ((todaySteps - fallbackSteps) / fallbackSteps) * 100;
+    const diff = parseFloat(diffRaw.toFixed(2));
+
+    res.json({
+      steps: todaySteps,
+      diff,
+      fallbackDate: yesterdayResult.rows[0].timestamp,
+    });
+  } catch (error) {
+    console.error('Error fetching steps:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
