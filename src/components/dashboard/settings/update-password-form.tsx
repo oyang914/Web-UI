@@ -15,44 +15,56 @@ import { useState } from 'react';
 
 
 export function UpdatePasswordForm(): React.JSX.Element {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfrimPassword] = useState('');
-  const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
+  const [user, setUser] = useState({
+    password: '',
+    cPassword: '',
+  });
 
-      if (!password || !confirmPassword) {
-          setMessage('User ID and new password are required.');
-          return;
+  const userId = localStorage.getItem('login-user-id'); // localstorage get login user id
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      if(!user.password){
+        alert('Please enter a password');
+        return;
+      }
+      if (user.password !== user.cPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+      const res = await fetch(`http://localhost:3001/api/users/updatePwd`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: user.password,
+          user_id: userId,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to update user data');
       }
 
-      try {
-          // Make a POST request to the backend to reset the password
-          const response = await axios.post('/resetpassword', {
-              password,
-              confirmPassword,
-          });
-
-          // Check the response and set an appropriate message
-          if (response.status === 200) {
-              setMessage('Password reset successfully.');
-          } else {
-              setMessage('Failed to reset password.');
-          }
-      } catch (error) {
-          setMessage('An error occurred while resetting the password.');
-          console.error('Error:', error);
-      }
+      alert('User details updated successfully!');
+    } catch (error) {
+      console.error('Error updating user data:', error);
+      alert('Failed to update user details');
+    }
   };
-
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUser({
+      ...user,
+      [event.target.name]: event.target.value,
+    });
+  };
 
 
   return (
     <form
-      onSubmit={(event) => {
-        event.preventDefault();
-      }}
+      onSubmit={handleSubmit}
     >
       <Card>
         <CardHeader subheader="Update password" title="Password" />
@@ -61,17 +73,17 @@ export function UpdatePasswordForm(): React.JSX.Element {
           <Stack spacing={3} sx={{ maxWidth: 'sm' }}>
             <FormControl fullWidth>
               <InputLabel>Password</InputLabel>
-              <OutlinedInput label="Password" name="password" type="password" />
+              <OutlinedInput label="Password" value={user.password} name="password" type="password"   onChange={handleChange}/>
             </FormControl>
             <FormControl fullWidth>
               <InputLabel>Confirm password</InputLabel>
-              <OutlinedInput label="Confirm password" name="confirmPassword" type="password" />
+              <OutlinedInput label="Confirm password" value={user.cPassword} name="cPassword" type="password" onChange={handleChange} />
             </FormControl>
           </Stack>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Update</Button>
+          <Button type="submit" variant="contained">Update</Button>
         </CardActions>
       </Card>
     </form>

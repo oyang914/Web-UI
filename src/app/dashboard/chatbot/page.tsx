@@ -118,7 +118,7 @@ export default function HealthConsultantChat(): React.JSX.Element {
   `;
   
       // send to LLM
-      const response = await fetch("http://peakxel.tpddns.cn:11434/api/generate", {
+      const response = await fetch("https://ollama.peakxel.net/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

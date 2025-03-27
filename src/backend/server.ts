@@ -60,7 +60,7 @@ app.post('/resetpassword', async (req: Request, res: Response): Promise<void> =>
 
 // Endpoint for user registration (to hash and store password)
 app.post('/register', async (req: Request, res: Response): Promise<void> => {
-  const { 
+  const {
     username,
     email,
     password,
@@ -80,7 +80,7 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
       'SELECT id FROM users WHERE email = $1 OR username = $2',
       [email, username]
     );
-    
+
     if (existingUser.rows.length > 0) {
       res.status(400).json({ message: 'User already exists' });
       return;
@@ -148,6 +148,83 @@ app.post('/login', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+// get user by id api
+app.get('/api/users/:id', async (req: Request, res: Response): Promise<void> => {
+  const userId = req.params.id;
+
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    res.json({ user: result.rows[0] });
+  } catch (err) {
+    console.error('Error fetching user:', err);
+    res.status(500).json({ message: 'Server error while fetching user' });
+  }
+});
+
+// update user api
+app.post('/api/users/update', async (req: Request, res: Response): Promise<void> => {
+  const userId = req.body.user_id;
+  const { name, email, emergency_contact_name, emergency_contact_number } = req.body;
+
+  // check param is true
+  if (!name || !email || !emergency_contact_name || !emergency_contact_number) {
+    res.status(400).json({ message: 'All fields are required' });
+    return;
+  }
+  try {
+    // update user
+    await pool.query(
+      `UPDATE users
+       SET name = $1, email = $2, emergency_contact_name = $3, emergency_contact_number = $4
+       WHERE id = $5`,
+      [name, email, emergency_contact_name, emergency_contact_number, userId]
+    );
+
+    res.json({ message: 'User updated successfully' });
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).json({ message: 'Server error during user update' });
+  }
+});
+
+
+// update user api
+app.post('/api/users/updatePwd', async (req: Request, res: Response): Promise<void> => {
+  const userId = req.body.user_id;
+  const { password } = req.body;
+
+  // check param is true
+  if (!password) {
+    res.status(400).json({ message: 'All fields are required' });
+    return;
+  }
+  try {
+    const password_hash = await bcrypt.hash(password, 10);
+    console.log(password_hash);
+    console.log(userId);
+    // update user
+    await pool.query(
+      `UPDATE users
+       SET password_hash = $1
+       WHERE id = $2`,
+      [password_hash,userId]
+    );
+
+    res.json({ message: 'User Password updated successfully' });
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).json({ message: 'Server error during user update' });
+  }
+});
+
+
+
 // Start the backend server
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
@@ -206,9 +283,9 @@ app.post("/api/sensors", async (req: Request, res: Response): Promise<void> => {
 app.get("/api/latest-max3010", async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await pool.query(`
-      SELECT max3010_data 
-      FROM sensor_data 
-      ORDER BY timestamp DESC 
+      SELECT max3010_data
+      FROM sensor_data
+      ORDER BY timestamp DESC
       LIMIT 1
   ` );
     if (result.rows.length === 0) {
@@ -245,9 +322,9 @@ app.get('/api/latest-sensor', async (req: Request, res: Response) => {
 // uv_data get endpoint
 app.get("/api/latest-uv", async (req: Request, res: Response): Promise<void> => {
   const result = await pool.query(`
-    SELECT uv_data 
-    FROM sensor_data 
-    ORDER BY timestamp DESC 
+    SELECT uv_data
+    FROM sensor_data
+    ORDER BY timestamp DESC
     LIMIT 1
   `);
   if (result.rows.length === 0) {
@@ -290,19 +367,19 @@ app.get('/api/latest-blood-oxygen', async (req: Request, res: Response): Promise
 
     // 查询当天最新步数
     const todayResult = await pool.query(`
-      SELECT mpu6050_data 
-      FROM sensor_data 
+      SELECT mpu6050_data
+      FROM sensor_data
       WHERE DATE(timestamp) = CURRENT_DATE
-      ORDER BY timestamp DESC 
+      ORDER BY timestamp DESC
       LIMIT 1
     `);
 
     // 查询昨天最新步数
     const yesterdayResult = await pool.query(`
-      SELECT mpu6050_data 
-      FROM sensor_data 
+      SELECT mpu6050_data
+      FROM sensor_data
       WHERE DATE(timestamp) = CURRENT_DATE - INTERVAL '1 day'
-      ORDER BY timestamp DESC 
+      ORDER BY timestamp DESC
       LIMIT 1
     `);
 
@@ -326,10 +403,10 @@ app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
   try {
     // Query today's latest steps
     const todayResult = await pool.query(`
-      SELECT mpu6050_data 
+      SELECT mpu6050_data
       FROM sensor_data
       WHERE DATE(timestamp) = CURRENT_DATE
-      ORDER BY timestamp DESC 
+      ORDER BY timestamp DESC
       LIMIT 1
     `);
 
@@ -343,7 +420,7 @@ app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
     // 1) Attempt yesterday
     let yesterdayResult = await pool.query(`
       SELECT mpu6050_data, timestamp
-      FROM sensor_data 
+      FROM sensor_data
       WHERE DATE(timestamp) = CURRENT_DATE - INTERVAL '1 day'
       ORDER BY timestamp DESC
       LIMIT 1

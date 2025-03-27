@@ -18,7 +18,7 @@ This project has been forked from: https://github.com/devias-io/material-kit-rea
 - **Alerts & Notifications**: Receive alerts for irregular health readings and reminders for medication, hydration, etc.
 - **User Management**: Secure login for users and caregivers to manage profiles and access data.
 - **Responsive Design**: Optimized for desktop and mobile viewing.
-- **Health Consultation**: An AI chatbot based on ChatGPT4o answering your health-related questions.
+- **Health Consultation**: An AI chatbot based on DeepSeek r1 answering your health-related questions.
 
 
 ---
@@ -46,12 +46,12 @@ What is done?
 - Login
 - AI Chat with voice input
 - Data transmission from sensor to database
-
+- Sensor data displayed on front end
+  
 What needs to be done right now?
 - Change Password (No longer working becasue the database structure changed)
 - Show Account details (using the new constructed user table from the database)
 - Including showing the popover (Top right name and email)
-- Sensor data displayed on front end
 
 Node.js v18.17.1.
 
