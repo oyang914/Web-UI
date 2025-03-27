@@ -39,7 +39,7 @@ class AuthClient {
   // Sign up method (register a new user)
   async signUp(params: SignUpParams): Promise<{ error?: string }> {
     const { username, name, email, password, emergency_contact_name, emergency_contact_number } = params;
-  
+
     try {
       const response = await fetch('http://localhost:3001/register', {
         method: 'POST',
@@ -48,16 +48,16 @@ class AuthClient {
         },
         body: JSON.stringify({ username, email, password, name, emergency_contact_name, emergency_contact_number }),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         return { error: data.message || 'Signup failed' };
       }
-  
+
       const token = generateToken();
       localStorage.setItem('custom-auth-token', token);
-  
+
       return {};
     } catch (error) {
       console.error('Signup error:', error);
@@ -86,6 +86,9 @@ class AuthClient {
 
       // Store JWT token from backend
       localStorage.setItem('custom-auth-token', data.token);
+
+      //localstorage set login userId
+      localStorage.setItem('login-user-id', data.user.id);
 
       return {};
     } catch (error) {
