@@ -13,10 +13,31 @@ import { Drop as DropIcon } from '@phosphor-icons/react/dist/ssr/Drop';
 
 export interface BloodOxygenProps {
   sx?: SxProps;
-  value?: number;
 }
 
-export function BloodOxygen({ value = 0, sx }: BloodOxygenProps): React.JSX.Element {
+export function BloodOxygen({ sx }: BloodOxygenProps): React.JSX.Element {
+  const [spo2, setSpo2] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchBloodOxygen = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/api/latest-max3010');
+        const data = await res.json();
+        console.log('SpO2 backend return:', data);
+
+        if (data.max3010_data && Array.isArray(data.max3010_data)) {
+          setSpo2(Number(data.max3010_data[1])); // 血氧在第2位
+        } else {
+          console.warn('invalid max3010_data:', data.max3010_data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch blood oxygen:', error);
+      }
+    };
+
+    fetchBloodOxygen();
+  }, []);
+
   return (
     <Card sx={sx}>
       <CardContent>
@@ -26,37 +47,17 @@ export function BloodOxygen({ value = 0, sx }: BloodOxygenProps): React.JSX.Elem
               <Typography color="text.secondary" gutterBottom variant="overline">
                 Blood Oxygen
               </Typography>
-              <Typography variant="h4">{value}%</Typography>
+              <Typography variant="h4">{spo2 !== null ? `${spo2}%` : 'Loading...'}</Typography>
             </Stack>
             <Avatar sx={{ backgroundColor: 'var(--mui-palette-warning-main)', height: '56px', width: '56px' }}>
               <DropIcon fontSize="var(--icon-fontSize-lg)" />
             </Avatar>
           </Stack>
           <div>
-            <LinearProgress value={value} variant="determinate" />
+            <LinearProgress value={spo2 ?? 0} variant="determinate" />
           </div>
         </Stack>
       </CardContent>
     </Card>
   );
-}
-
-export default function BloodOxygenDisplay() {
-  const [bloodOxygen, setBloodOxygen] = useState<number>(0);
-
-  useEffect(() => {
-    const fetchBloodOxygen = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/latest-blood-oxygen');
-        const data = await response.json();
-        setBloodOxygen(data.bloodOxygen);
-      } catch (error) {
-        console.error('Failed to fetch blood oxygen:', error);
-      }
-    };
-
-    fetchBloodOxygen();
-  }, []);
-
-  return <BloodOxygen value={bloodOxygen} />;
 }
