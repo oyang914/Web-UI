@@ -95,27 +95,22 @@ export default function HealthConsultantChat(): React.JSX.Element {
   
       // integrate data to Prompt
       const sensorPrompt = `
-  You are a professional health consultation assistant. Refer to the following sensor data:
-  
-  - UV index: ${sensorData.uv_data?.[0]}
-  - Temperature (°C): ${sensorData.bmp280_data?.[0]}
-  - Step count: ${sensorData.mpu6050_data?.[0]}
-  - Heart rate: ${sensorData.max3010_data?.[0]}
-  - Blood oxygen level (SpO2): ${sensorData.max3010_data?.[1]}
-  
-  Analyze the above data to give health advice. Consider:
-  - High UV -> remind to wear sunscreen or reduce outdoor activities
-  - Low step count -> encourage more walking
-  - High/low heart rate or SpO2 -> give potential reasons and suggestions
-  - Extreme temperature -> suggest precautions
-  
-  Example:
-  "If the UV index is high, recommend avoiding sun exposure. If steps are below 5000, recommend walking more."
-  
-  User's question: ${text}
-  
-  Think step by step. Then give professional and friendly advice.
-  `;
+You are a professional health assistant. You have access to real-time sensor data from the user:
+
+- UV index: ${sensorData.uv_data?.[0]}
+- Temperature: ${sensorData.bmp280_data?.[0]} °C
+- Step count: ${sensorData.mpu6050_data?.[0]}
+- Heart rate: ${sensorData.max3010_data?.[0]} bpm
+- SpO2: ${sensorData.max3010_data?.[1]} %
+
+Use this data to provide personalized health advice **only if it's relevant to the user's question**.
+
+Your goal is to provide concise, helpful suggestions based on the user's query and sensor data, **without unnecessary repetition**.
+
+Only mention the sensor values if they are important to the specific question. Do not always follow a fixed structure.
+
+User's question: ${text}
+`;
   
       // send to LLM
       const response = await fetch("https://ollama.peakxel.net/api/generate", {
