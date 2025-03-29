@@ -39,7 +39,7 @@ export function Ultraviolet({ sx }: UltravioletProps): React.JSX.Element {
         }
 
         if (uvArray && uvArray.length > 0) {
-          setUvValue(uvArray[0]);
+          setUvValue(uvArray[1]);
         }
       } catch (error) {
         console.error('Failed to fetch UV data:', error);
