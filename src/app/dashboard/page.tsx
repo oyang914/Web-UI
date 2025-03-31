@@ -22,7 +22,7 @@ export default function Page(): React.JSX.Element {
         <HeartRate diff={12} trend="up" sx={{ height: '100%' }} value="80" />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
-        <Steps diff={16} trend="down" sx={{ height: '100%' }} value="20k" />
+        <Steps diff={16} trend="down" sx={{ height: '100%' }} />
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <BloodOxygen sx={{ height: '100%' }} />

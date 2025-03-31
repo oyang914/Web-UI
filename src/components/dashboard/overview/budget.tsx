@@ -1,5 +1,8 @@
 
+// Project: heart-rate-monitor
+
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import {
   SxProps,
@@ -21,25 +24,33 @@ export interface HeartRateProps {
 export function HeartRate({ trend = 'up', sx }: HeartRateProps): React.JSX.Element {
   const [heartRate, setHeartRate] = useState<number | null>(null);
 
-  // Fetch max3010_data from the backend and extract heart rate
-  useEffect(() => {
-    const fetchHeartRate = async () => {
-      try {
-        const res = await fetch('http://localhost:3001/api/latest-max3010');
-        const data = await res.json();
-        console.log('backend return:', data);
+  // Fetch heart rate data from the backend
+  const fetchHeartRate = async () => {
+    try {
+      const res = await fetch('http://localhost:3001/api/latest-max3010');
+      const data = await res.json();
+      console.log('backend return:', data);
 
-        if (data.max3010_data && Array.isArray(data.max3010_data)) {
-          setHeartRate(data.max3010_data[0]); // get heart rate from first element
-        } else {
-          console.warn('invalid max3010_data:', data.max3010_data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch heart rate:', error);
+      if (data.max3010_data && Array.isArray(data.max3010_data)) {
+        setHeartRate(data.max3010_data[0]); // get heart rate from first element
+      } else {
+        console.warn('invalid max3010_data:', data.max3010_data);
       }
-    };
+    } catch (error) {
+      console.error('Failed to fetch heart rate:', error);
+    }
+  };
 
-    fetchHeartRate();
+  // Refresh the heart rate every 3 seconds
+  useEffect(() => {
+    fetchHeartRate(); // Initial fetch on mount
+
+    const intervalId = setInterval(() => {
+      fetchHeartRate();
+    }, 5000);
+
+    // Cleanup to avoid memory leaks
+    return () => clearInterval(intervalId);
   }, []);
 
   // Choose icon and color based on trend
