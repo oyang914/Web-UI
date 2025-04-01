@@ -358,112 +358,37 @@ app.get('/api/latest-blood-oxygen', async (req: Request, res: Response): Promise
   }
 });
 
-// 获取步数以及今日与昨日的对比差值
+
+
+
+// get step count endpoint
 app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
   try {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-
-    // 查询当天最新步数
-    const todayResult = await pool.query(`
+    const result = await pool.query(`
       SELECT mpu6050_data
       FROM sensor_data
-      WHERE DATE(timestamp) = CURRENT_DATE
       ORDER BY timestamp DESC
       LIMIT 1
     `);
 
-    // 查询昨天最新步数
-    const yesterdayResult = await pool.query(`
-      SELECT mpu6050_data
-      FROM sensor_data
-      WHERE DATE(timestamp) = CURRENT_DATE - INTERVAL '1 day'
-      ORDER BY timestamp DESC
-      LIMIT 1
-    `);
-
-    if (todayResult.rows.length === 0 || yesterdayResult.rows.length === 0) {
-      res.status(404).json({ message: 'No sufficient data' });
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'No sensor data found' });
       return;
     }
 
-    const todaySteps = JSON.parse(todayResult.rows[0].mpu6050_data)[0];
-    const yesterdaySteps = JSON.parse(yesterdayResult.rows[0].mpu6050_data)[0];
-    const diff = ((todaySteps - yesterdaySteps) / yesterdaySteps) * 100;
+    const mpu6050_data = result.rows[0].mpu6050_data;
+    // If mpu6050_data is stored as a JSON string, parse it
+    const parsedData = typeof mpu6050_data === 'string' ? JSON.parse(mpu6050_data) : mpu6050_data;
+    const stepCount = parsedData[0]; // get step count from the first element
 
-    res.json({ steps: todaySteps, diff: parseFloat(diff.toFixed(2)) });
+    res.json({ stepCount });
   } catch (error) {
-    console.error('Error fetching steps:', error);
+    console.error('Error fetching step count:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-/*app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
-  try {
-    // Query today's latest steps
-    const todayResult = await pool.query(`
-      SELECT mpu6050_data
-      FROM sensor_data
-      WHERE DATE(timestamp) = CURRENT_DATE
-      ORDER BY timestamp DESC
-      LIMIT 1
-    `);
 
-    if (todayResult.rows.length === 0) {
-      // No data for today
-      res.status(404).json({ message: 'No data for today' });
-      return;
-    }
-
-    // Query yesterday's (or fallback) latest steps
-    // 1) Attempt yesterday
-    let yesterdayResult = await pool.query(`
-      SELECT mpu6050_data, timestamp
-      FROM sensor_data
-      WHERE DATE(timestamp) = CURRENT_DATE - INTERVAL '1 day'
-      ORDER BY timestamp DESC
-      LIMIT 1
-    `);
-
-    if (yesterdayResult.rows.length === 0) {
-      // 2) Fallback: fetch the most recent day before today
-      yesterdayResult = await pool.query(`
-        SELECT mpu6050_data, timestamp
-        FROM sensor_data
-        WHERE DATE(timestamp) < CURRENT_DATE
-        ORDER BY timestamp DESC
-        LIMIT 1
-      `);
-
-      if (yesterdayResult.rows.length === 0) {
-        // No older data found at all
-        res.status(404).json({ message: 'No sufficient historical data' });
-        return;
-      }
-    }
-
-    // Now parse the data
-    const todaySteps = JSON.parse(todayResult.rows[0].mpu6050_data)[0];
-    const fallbackSteps = JSON.parse(yesterdayResult.rows[0].mpu6050_data)[0];
-
-    // Calculate percentage difference
-    //  (todaySteps - fallbackSteps) / fallbackSteps * 100
-    const diffRaw = fallbackSteps === 0
-      ? 100 // If fallbackSteps is 0, we can define behavior (100% or skip the division)
-      : ((todaySteps - fallbackSteps) / fallbackSteps) * 100;
-    const diff = parseFloat(diffRaw.toFixed(2));
-
-    res.json({
-      steps: todaySteps,
-      diff,
-      fallbackDate: yesterdayResult.rows[0].timestamp,
-    });
-  } catch (error) {
-    console.error('Error fetching steps:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});*/
 
 // get api for account info
 // Example in your Express server file
