@@ -359,7 +359,7 @@ app.get('/api/latest-blood-oxygen', async (req: Request, res: Response): Promise
 });
 
 // 获取步数以及今日与昨日的对比差值
-/*app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
+app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
   try {
     const today = new Date();
     const yesterday = new Date(today);
@@ -397,9 +397,9 @@ app.get('/api/latest-blood-oxygen', async (req: Request, res: Response): Promise
     console.error('Error fetching steps:', error);
     res.status(500).json({ error: 'Server error' });
   }
-});*/
+});
 
-app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
+/*app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
   try {
     // Query today's latest steps
     const todayResult = await pool.query(`
@@ -463,4 +463,40 @@ app.get('/api/steps', async (req: Request, res: Response): Promise<void> => {
     console.error('Error fetching steps:', error);
     res.status(500).json({ error: 'Server error' });
   }
+});*/
+
+// get api for account info
+// Example in your Express server file
+app.get('/api/account', async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Adjust the user ID as needed (could come from session, token, query param, etc.)
+    const userId = 3;
+
+    const query = `
+      SELECT
+        id,
+        username,
+        email,
+        role,
+        name,
+        emergency_contact_name,
+        emergency_contact_number,
+        device_id,
+        created_at
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+    `;
+
+    const { rows } = await pool.query(query, [userId]);
+    if (rows.length === 0) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
+
