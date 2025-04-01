@@ -1,3 +1,4 @@
+// Project: blood oxygen
 'use client';
 
 import * as React from 'react';
@@ -18,24 +19,32 @@ export interface BloodOxygenProps {
 export function BloodOxygen({ sx }: BloodOxygenProps): React.JSX.Element {
   const [spo2, setSpo2] = useState<number | null>(null);
 
-  useEffect(() => {
-    const fetchBloodOxygen = async () => {
-      try {
-        const res = await fetch('http://localhost:3001/api/latest-max3010');
-        const data = await res.json();
-        console.log('SpO2 backend return:', data);
+  const fetchBloodOxygen = async () => {
+    try {
+      const res = await fetch('http://localhost:3001/api/latest-max3010');
+      const data = await res.json();
+      console.log('SpO2 backend return:', data);
 
-        if (data.max3010_data && Array.isArray(data.max3010_data)) {
-          setSpo2(Number(data.max3010_data[1])); // 血氧在第2位
-        } else {
-          console.warn('invalid max3010_data:', data.max3010_data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch blood oxygen:', error);
+      if (data.max3010_data && Array.isArray(data.max3010_data)) {
+        setSpo2(Number(data.max3010_data[1])); // 血氧在第2位
+      } else {
+        console.warn('invalid max3010_data:', data.max3010_data);
       }
-    };
+    } catch (error) {
+      console.error('Failed to fetch blood oxygen:', error);
+    }
+  };
 
-    fetchBloodOxygen();
+  // Refresh the heart rate every 3 seconds
+  useEffect(() => {
+    fetchBloodOxygen(); // Initial fetch on mount
+
+    const intervalId = setInterval(() => {
+      fetchBloodOxygen();
+    }, 5000);
+
+    // Cleanup to avoid memory leaks
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
