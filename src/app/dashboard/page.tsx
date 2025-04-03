@@ -12,6 +12,7 @@ import { BloodOxygen } from '@/components/dashboard/overview/tasks-progress';
 import { Steps } from '@/components/dashboard/overview/total-customers';
 import { Ultraviolet } from '@/components/dashboard/overview/total-profit';
 import { Traffic } from '@/components/dashboard/overview/traffic';
+import DeviceConnectionStatusPage from '@/components/dashboard/overview/DeviceStatus';
 
 export const metadata = { title: `Overview | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -29,6 +30,9 @@ export default function Page(): React.JSX.Element {
       </Grid>
       <Grid lg={3} sm={6} xs={12}>
         <Ultraviolet sx={{ height: '100%' }} value="6" />
+      </Grid>
+      <Grid lg={3} sm={6} xs={12}>
+        <DeviceConnectionStatusPage />
       </Grid>
       <Grid lg={8} xs={12}>
         <Sales

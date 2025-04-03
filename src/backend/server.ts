@@ -425,3 +425,30 @@ app.get('/api/account', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+// 假设设备10分钟没上传数据就算断开
+app.get('/api/device-status', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const result = await pool.query(
+      `SELECT timestamp AS recorded_at
+      FROM sensor_data
+      ORDER BY recorded_at DESC
+      LIMIT 1`
+    );
+
+    if (result.rows.length === 0) {
+      res.json({ connected: false, lastSeen: null });
+      return;
+    }
+
+    const lastRecordedTime = new Date(result.rows[0].recorded_at);
+    const now = new Date();
+    const diffMinutes = (now.getTime() - lastRecordedTime.getTime()) / 1000 / 60;
+
+    const isConnected = diffMinutes < 10;
+
+    res.json({ connected: isConnected, lastSeen: lastRecordedTime });
+  } catch (error) {
+    console.error('Error checking device status:', error);
+    res.status(500).json({ connected: false, error: 'Server error' });
+  }
+});
