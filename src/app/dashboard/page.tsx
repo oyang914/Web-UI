@@ -36,6 +36,9 @@ export default function Page(): React.JSX.Element {
       <Grid lg={3} sm={6} xs={12}>
         <DeviceConnectionStatusPage />
       </Grid>
+      <Grid lg={3} sm={6} xs={12}>
+        <DeviceViewerPage/>
+      </Grid>
       <Grid lg={8} xs={12}>
         <Sales
           chartSeries={[
