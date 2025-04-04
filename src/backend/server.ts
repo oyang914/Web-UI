@@ -452,3 +452,39 @@ app.get('/api/device-status', async (req: Request, res: Response): Promise<void>
     res.status(500).json({ connected: false, error: 'Server error' });
   }
 });
+
+// get all device id api
+app.get('/api/devices', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const result = await pool.query('SELECT device_id FROM devices');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching device IDs:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// get sensor data by device id api
+app.get('/api/devices/:deviceId', async (req: Request, res: Response): Promise<void> => {
+  let deviceId = req.params.deviceId;
+  
+  // Remove any leading colon from deviceId if present
+  if (deviceId.startsWith(':')) {
+    deviceId = deviceId.substring(1);
+  }
+
+  try {
+    const result = await pool.query(`
+      SELECT *
+      FROM sensor_data
+      WHERE device_id = $1
+      ORDER BY timestamp DESC
+    `, [deviceId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching sensor data:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+

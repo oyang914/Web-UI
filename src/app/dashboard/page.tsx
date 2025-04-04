@@ -13,6 +13,8 @@ import { Steps } from '@/components/dashboard/overview/total-customers';
 import { Ultraviolet } from '@/components/dashboard/overview/total-profit';
 import { Traffic } from '@/components/dashboard/overview/traffic';
 import DeviceConnectionStatusPage from '@/components/dashboard/overview/DeviceStatus';
+import DeviceViewerPage from '@/components/dashboard/overview/device-view';
+
 
 export const metadata = { title: `Overview | Dashboard | ${config.site.name}` } satisfies Metadata;
 
