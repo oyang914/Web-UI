@@ -319,6 +319,36 @@ app.get('/api/latest-sensor', async (req: Request, res: Response) => {
   }
 });
 
+//
+app.get('/api/stepStatistics', async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        TO_CHAR(timestamp, 'YYYY-MM-DD') AS date,
+    mpu6050_data,
+    (mpu6050_data #>> '{0}')::INT AS first_value
+      FROM (
+        SELECT DISTINCT ON (date_trunc('day', timestamp))
+        timestamp,
+        mpu6050_data
+        FROM sensor_data
+        ORDER BY date_trunc('day', timestamp) DESC, timestamp DESC
+        ) AS last_record_per_day
+      ORDER BY date ASC;
+    `);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ message: 'No sensor data found' });
+      return;
+    }
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching daily latest sensor data:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // uv_data get endpoint
 app.get("/api/latest-uv", async (req: Request, res: Response): Promise<void> => {
   const result = await pool.query(`

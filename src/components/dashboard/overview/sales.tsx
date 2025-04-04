@@ -20,15 +20,54 @@ export interface SalesProps {
   sx?: SxProps;
 }
 
-export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
-  const chartOptions = useChartOptions();
+
+export function Sales({ sx }: SalesProps): React.JSX.Element {
+  const [chartSeries, setChartSeries] = React.useState<{ name: string; data: number[] }[]>([]);
+  const [categories, setCategories] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  const chartOptions = useChartOptions(categories);
+
+  // 获取传感器数据
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3001/api/stepStatistics');
+      const data = await res.json();
+
+      if (Array.isArray(data)) {
+        console.log(data);
+        const dates = data.map((item) => item.date);
+        const values = data.map((item) => item.first_value);
+        console.log(dates);
+
+        console.log(values);
+        setCategories(dates);
+        setChartSeries([{ name: 'Step', data: values }]);
+      }
+    } catch (error) {
+      console.error('Error fetching sensor data:', error);
+    }
+    setLoading(false);
+  };
+
+  // 组件加载时获取数据
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <Card sx={sx}>
       <CardHeader
         action={
-          <Button color="inherit" size="small" startIcon={<ArrowClockwiseIcon fontSize="var(--icon-fontSize-md)" />}>
-            Sync
+          <Button
+            color="inherit"
+            size="small"
+            startIcon={<ArrowClockwiseIcon fontSize="var(--icon-fontSize-md)" />}
+            onClick={fetchData}
+            disabled={loading}
+          >
+            {loading ? 'Syncing...' : 'Sync'}
           </Button>
         }
         title="Steps"
@@ -46,7 +85,7 @@ export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
   );
 }
 
-function useChartOptions(): ApexOptions {
+function useChartOptions(categories: string[]): ApexOptions {
   const theme = useTheme();
 
   return {
@@ -65,14 +104,14 @@ function useChartOptions(): ApexOptions {
     stroke: { colors: ['transparent'], show: true, width: 2 },
     theme: { mode: theme.palette.mode },
     xaxis: {
+      categories,
       axisBorder: { color: theme.palette.divider, show: true },
       axisTicks: { color: theme.palette.divider, show: true },
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       labels: { offsetY: 5, style: { colors: theme.palette.text.secondary } },
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (value > 0 ? `${value}` : `${value}`),
         offsetX: -10,
         style: { colors: theme.palette.text.secondary },
       },
